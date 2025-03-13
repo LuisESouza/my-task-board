@@ -7,10 +7,10 @@ const router = express.Router();
 // Create task
 router.post('/create',auth, TasksController.createTask);
 // Get Task by ID
-router.get('/get/:user_id', TasksController.getTask);
+router.get('/get/:user_id',auth, TasksController.getTask);
 // Put Task by ID
-router.put('/put/:task_id',auth, );
+router.put('/put/:task_id',auth, TasksController.putTask);
 // Delete Task by ID
-router.delete('/delete/:task_id',auth, );
+router.delete('/delete/:task_id',auth, TasksController.deleteTask);
 
 export default router;

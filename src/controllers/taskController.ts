@@ -9,7 +9,7 @@ export const createTask = async(req: Request, res: Response) => {
     }catch(error){
         res.status(500).json({message: 'Erro ao criar user', error});
     }
-}
+};
 
 export const getTask = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -25,7 +25,27 @@ export const getTask = async (req: Request, res: Response): Promise<void> => {
         }
         res.json(tasks);
     } catch (error) {
-        console.error(error);
         res.status(500).json({ message: 'Erro ao pegar tasks', error });
+    }
+};
+
+export const putTask = async(req: Request, res: Response) => {
+    const { task_id } = req.params;
+    const { title, description, status } = req.body;
+    try{
+        await TaskModel.putTask(task_id, {title, description, status});
+        res.json('Task alterada com sucesso');
+    }catch(error){
+        res.status(500).json({message: 'Erro ao alterar task', error});
+    }
+};
+
+export const deleteTask = async(req: Request, res: Response) => {
+    const { task_id } = req.params;
+    try{
+        await TaskModel.deleteTask(task_id);
+        res.json('Task deletada com sucesso');
+    }catch(error){
+        res.status(500).json({message: 'Erro ao deletar task', error});
     }
 };

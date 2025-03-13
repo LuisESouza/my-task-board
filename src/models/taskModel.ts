@@ -11,7 +11,7 @@ export const createTask = async(data: {user_id: string; title: string; descripti
             status: data.status
         } 
     });
-}
+};
 
 export const getTask = async (user_id: string) => {
     return await prisma.tasks.findMany({ 
@@ -21,6 +21,7 @@ export const getTask = async (user_id: string) => {
 
 
 export const putTask = async (task_id: string, data: { title?: string; description?: string; status?: string }) => {
+    console.log("Testando os dados: ",data)
     return await prisma.tasks.update({
         where: { id: task_id },
         data,
