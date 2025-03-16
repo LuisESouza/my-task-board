@@ -2,9 +2,9 @@ import { Request, Response } from 'express';
 import * as TaskModel from '../models/taskModel';
 
 export const createTask = async(req: Request, res: Response) => {
-    const { user_id, title, description, status} = req.body;
+    const { user_id, title, description, status, icon} = req.body;
     try{
-        await TaskModel.createTask({user_id, title, description, status});
+        await TaskModel.createTask({user_id, title, description, status, icon});
         res.status(200).json({message: 'Task criada com sucesso!'});
     }catch(error){
         res.status(500).json({message: 'Erro ao criar user', error});
@@ -31,9 +31,9 @@ export const getTask = async (req: Request, res: Response): Promise<void> => {
 
 export const putTask = async(req: Request, res: Response) => {
     const { task_id } = req.params;
-    const { title, description, status } = req.body;
+    const { title, description, status, icon } = req.body;
     try{
-        await TaskModel.putTask(task_id, {title, description, status});
+        await TaskModel.putTask(task_id, {title, description, status, icon});
         res.json('Task alterada com sucesso');
     }catch(error){
         res.status(500).json({message: 'Erro ao alterar task', error});
