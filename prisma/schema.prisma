@@ -23,6 +23,7 @@ model Tasks {
   user_id     String   @db.ObjectId
   title       String
   description String?
+  icon        String
   status      String
   created_at  DateTime @default(now())
   user        Users     @relation(fields: [user_id], references: [id])
