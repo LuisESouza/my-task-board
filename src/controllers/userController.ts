@@ -11,7 +11,11 @@ export const createUser = async(req: Request, res: Response): Promise<any> => {
           return res.status(500).json('Erro ao registrar: Email ja registrado');
         }
         const user = await UserModel.createUser({ email ,username, password});
-        res.status(201).json(user);
+        if(!user){
+          res.status(500).json('Erro ao registrar');
+        }
+        const token = jwt.sign({ userId: user.id }, 'teste', { expiresIn: '1h' });
+        res.status(201).json({ token });
     }catch(error){
         res.status(500).json({message: 'Erro ao registrar user', error});
     }

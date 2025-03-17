@@ -20,7 +20,6 @@ export const getTask = async (user_id: string) => {
     });
 };
 
-
 export const putTask = async (task_id: string, data: { title?: string; description?: string; status?: string; icon?: string}) => {
     console.log("Testando os dados: ",data)
     return await prisma.tasks.update({
@@ -28,7 +27,6 @@ export const putTask = async (task_id: string, data: { title?: string; descripti
         data,
     });
 };
-
 
 export const deleteTask = async (task_id: string) => {
     return await prisma.tasks.delete({

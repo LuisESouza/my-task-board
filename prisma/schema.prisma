@@ -28,3 +28,4 @@ model Tasks {
   created_at  DateTime @default(now())
   user        Users     @relation(fields: [user_id], references: [id])
 }
+
