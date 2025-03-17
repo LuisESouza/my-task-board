@@ -4,22 +4,27 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 export const createUser = async(req: Request, res: Response): Promise<any> => {
-    const {  email, username, password } = req.body;
-    try{
-        const userCheck = await UserModel.getUserByEmail(email)
-        if(userCheck){
-          return res.status(500).json('Erro ao registrar: Email ja registrado');
-        }
-        const user = await UserModel.createUser({ email ,username, password});
-        if(!user){
-          res.status(500).json('Erro ao registrar');
-        }
-        const token = jwt.sign({ userId: user.id }, 'teste', { expiresIn: '1h' });
-        res.status(201).json({ token });
-    }catch(error){
-        res.status(500).json({message: 'Erro ao registrar user', error});
-    }
+  const { email, username, password } = req.body;
+  try {
+      const userCheck = await UserModel.getUserByEmail(email);
+      if (userCheck) {
+          return res.status(400).json({ message: 'Erro ao registrar: Email já registrado' });
+      }
+      
+      const user = await UserModel.createUser({ email, username, password });
+      if (!user) {
+          return res.status(500).json({ message: 'Erro ao registrar' });
+      }
+      
+      const token = jwt.sign({ userId: user.id }, 'teste', { expiresIn: '1h' });
+      const { password: _, ...userWithoutPassword } = user;
+
+      res.status(201).json({ token, user: userWithoutPassword });
+  } catch (error) {
+      res.status(500).json({ message: 'Erro ao registrar usuário', error });
+  }
 };
+
 
 export const getUserById = async (req: Request, res: Response): Promise<any> => {
   const { user_id } = req.params;
@@ -46,7 +51,9 @@ export const loginUser = async(req: Request, res: Response): Promise<any> => {
       return res.status(401).json({ message: 'Senha inválida' });
     }
     const token = jwt.sign({ userId: user.id }, 'teste', { expiresIn: '1h' });
-    res.status(200).json({ token });
+    const { password: _, ...userWithoutPassword } = user;
+    
+    res.status(200).json({ token, user: userWithoutPassword });
   } catch (error) {
     res.status(500).json({ message: 'Erro ao fazer login', error });
   }
